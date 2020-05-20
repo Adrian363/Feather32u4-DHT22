@@ -4,7 +4,7 @@
 
 - Passerelle LoRa connectée à TTN
 - Carte feather32u4 avec module LoRa
-- Capteur de températures DHT22
+- Capteur de températures et d'humité DHT22
 - Connecteur UFL + antenne 
 
 
@@ -13,7 +13,7 @@
 
 ![](https://i.imgur.com/gxpczxM.png)
 
-Pour connecter le capteur, l'alimentation se branche sur le 3V de la carte, la masse sur le GND et enfin la partie DATA sur port digital compris entre 10 et 13.
+Pour connecter le capteur, l'alimentation se branche sur le 3V de la carte, la masse sur le GND et enfin la partie DATA sur un port digital compris entre 10 et 13.
 
 
 ### Installation de la carte sur l'IDE Arduino:
@@ -28,8 +28,8 @@ Sur Mac:
     
 ![](https://i.imgur.com/UcPjCcn.png)
     3) Relancer Arduino 
-    4) Dans un Tools/Board choisir "AdaFruit feather 32u4"
-    5) Étant donné que cette carte a le même microprocesseur qu'un Arduino Léonardo, vous pouvez utilisez les mêmes commandes.
+    4) Dans Tools/Board choisir "AdaFruit feather 32u4"
+    5) Étant donné que cette carte a le même microprocesseur qu'un Arduino Leonardo, vous pouvez utilisez les mêmes commandes.
     
 Sur Windows:
     Globalement la même installation à la seule différence qu'il faut installer un pilote pour que la carte soit détecter par l'ordinateur.
@@ -38,21 +38,21 @@ Sur Windows:
     
 ### Récupération des données du DHT22
 Pour récupérer la température ainsi que l'humidité de notre capteur, nous allons utiliser la librairie "DHT.h".
-Pour l'installer, cliquer sur Tools/Manage Librairies , chercher et installer la librairie DHT.
+Pour l'installer, allez dans Tools/Manage Librairies , cherchez et installez la librairie DHT.
 
-Une fois cela fait ajouter il faut inclure la librairie dans le code avec la commande suivant:
+Une fois cela ajouté, il faut inclure la librairie dans le code avec la commande suivante:
 ```
     #include "DHT.h"
 
 ```
 
-> À noter: l'ensemble du code source se trouve sur GitHub via ce lien.
+> À noter: l'ensemble du code source se trouve sur GitHub.
 
 On définit ensuite le port sur lequel est branché notre capteur ainsi que le type du capteur avec les commandes suivantes:
 
 ![](https://i.imgur.com/d2ykEhe.png)
 
-On définit aussi les propriétés du capteurs qui sont tout simplement le port de branchement ainsi que le type du capteur (DHT11 ou DHT22).
+On définit aussi les propriétés du capteurs qui sont le port de branchement ainsi que le type du capteur (DHT11 ou DHT22).
 
 Pour stocker les valeurs récupérées par notre capteur, on crée 2 variables de types float comme suit:
 
@@ -72,7 +72,7 @@ On récupère et on stocke ensuite les données dans ces variables avec les comm
 
 Dans cette partie, nous allons configurer notre carte pour qu'elle envoie les données températures et d'humidité sur TTN dans un premier temps.
 
-Pour cet exemple, nous allons utilisé la méthodé d'activation ABP( Activation By Personnalisation) mais il est évidement possible de réaliser cet envoi avec la méthode d'activation OTAA.
+Pour cet exemple, nous allons utilisé la méthode d'activation ABP( Authentication By Personalisation) mais il est évidement possible de réaliser cet envoi avec la méthode d'activation OTAA.
 
 Nous devons maintenant créer une application sur TTN. Il faut cliquer sur créer une nouvelle application et remplir les champs comme le montre la capture d’écran ci-dessous.
 
@@ -81,9 +81,9 @@ Nous devons maintenant créer une application sur TTN. Il faut cliquer sur crée
 
 Pour le choix du serveur, choisissez le serveur le plus proche de votre zone géographique pour minimiser les latences.
 
-Une fois cette opération réalisée, on doit enregistrer notre carte feather 32u4
+Une fois cette opération réalisée, on doit enregistrer notre carte Feather 32u4.
 
-Pour cela, on se rend sur notre application pour dans la partie "Devices".
+Pour cela, on se rend sur notre application puis dans la partie "Devices".
 
 ![](https://i.imgur.com/7zb0OvP.png)
 
@@ -94,24 +94,24 @@ Le champ "App EUI" est rempli automatiquement et il correspond à l'identifacteu
 
 ![](https://i.imgur.com/ri3HruR.png)
 
-Une fois notre device crée, on se rend sur celui-ci dans la partie "Settings". On choisi la méthode d'activiation "ABP" si cela n'est pas déjà fait.
+Une fois notre device crée, on se rend sur celui-ci dans la partie "Settings". On choisi la méthode d'activiation "ABP" si ce n'est pas déjà fait.
 
-Mainteant que notre application est configurée sur TTN, nous allons utiliser la librairie "TinyLoRa" pour émettre envoyer nos données.
+Maintenant que notre application est configurée sur TTN, nous allons utiliser la librairie "TinyLoRa" pour envoyer nos données.
 
 Dans un premier temps, il faut inclure la librairie dans notre programme avec la commande suivante:
 ```
     #include <TinyLoRa.h>
 ```
 
-Dans notre code arduino, on doit d'abord reseingner les champs suivants:
+Dans notre code arduino, on doit d'abord renseigner les champs suivants:
 
 ![](https://i.imgur.com/Mg4gPdG.png)
 
 * **Network Session Key**
 * **Application Session Key**: Clé identifiant notre application TTN
-* **Device Address**: Clé identifiant notte device sur TTN
+* **Device Address**: Clé identifiant notre device sur TTN
 
-A noter que l'on peut retrouver l'ensemble de ces clés sur l'interfaced de notre device TTN.
+A noter: On peut retrouver l'ensemble de ces clés sur l'interface de notre device TTN.
 
 ![](https://i.imgur.com/8GmESNO.png)
 
@@ -119,17 +119,18 @@ On doit aussi identifier sur quels ports est branché notre module LoRa sur la f
 
 ![](https://i.imgur.com/W0kYQns.png)
 
-Enfin, on définit une variable d'une taille de 4 octets pout stocker et envoyer la température sur TTN.
+Enfin, on définit une variable d'une taille de 4 octets pout stocker et envoyer la température et l'humidité sur TTN.
 
 ![](https://i.imgur.com/IXltmkw.png)
 
-Dans notre cas, on a seulement besoin de 4 octets, soit 2 octets pour la températures et 2 pour l'humidité car avec 16 bits pour chaque, on peut coder des valeurs allant à plus de 65000. 
+Dans notre cas, on a seulement besoin de 4 octets, soit 2 octets pour la température et 2 pour l'humidité car, avec 16 bits pour chaque, on peut coder des valeurs allant à plus de 65000. 
 
-Comme le capteur relève ces valeurs avec 2 chiffes, après la virgule, pour éviter le problèmes pendant la transmission, on va multiplier par 100 pour avoir un nombre entier.
+Comme le capteur relève ces valeurs avec 2 chiffes après la virgule, pour éviter les problèmes pendant la transmission, on va multiplier ces valeurs par 100 pour avoir un nombre entier.
 
 Donc même si on a on 100% * 100 =10000 cela tient largement dans 16 bits. 
 
-En revanche, on ne peut pas mettre 1 octet pour chaque valeur car avec 8 bits on peut coder jusqu'à 255 et 10000 est très largement supérieur à 255.
+En revanche, on ne peut pas mettre 1 octet pour chaque valeur car avec 8 bits on peut coder des nombres allant jusqu'à 255 et 10000 est très largement supérieur à 255.
+
 On utilise donc 2 octects pour chaque valeur.
 
 ![](https://i.imgur.com/RhqIhDO.png)
@@ -149,7 +150,7 @@ Pour cela, on va multiplier nos données par 100 pour éviter les nombres décim
 
 ![](https://i.imgur.com/hIPggML.png)
 
-Nous avons mainteant des valeurs entières à envoyer sur via LoRa. Il faut les placer notre variable loraData pour qu'elles soient envoyées par la suite.
+Nous avons mainteant des valeurs entières à envoyer via LoRa. Il faut les placer dans notre variable loraData pour qu'elles soient envoyées par la suite.
 
 Pour cela, on va utiliser la commande lowByte() and highByte().
 
@@ -167,29 +168,29 @@ Le compteur est très utile car il permet de numéroter les trames et peut perme
 Si l'on souhaite, on peut envoyer une multitude de données vers TTN. Pour cela, il suffit d'adapter quelque peu le code vu avant.
 Dans cet exemple, nous allons transmettre des données GPS.
 
-Il faut dans un premier temps augmenter la taille de notre variable loraData pour la passer de 4 octets à 12. En effet, la latitude et la longitude seront codée sur 32 bits chaque pour éviter les virgules ce qui représente 4 octects pour chaque en plus des 4 octets pour le capteur DHT22.
+Il faut dans un premier temps augmenter la taille de notre variable loraData pour la passer de 4 octets à 12. En effet, la latitude et la longitude seront codés sur 32 bits chaque pour éviter les virgules, ce qui représente 4 octets pour chaque en plus des 4 octets pour le capteur DHT22.
 
 ![](https://i.imgur.com/1NTGoqL.png)
 
 
-On converti ensuite ces 2 paramètres sur 32 bits comme suit:
+On convertit ensuite ces 2 paramètres sur 32 bits comme suit:
 ![](https://i.imgur.com/wncLUKC.png)
 
-On mutiplie chaque valeur par 1 million pour éviter les virgules et avoir des nombres entier à transmettre. On est obligé de coder ces valeurs sur 32 bits car avec 16 bits on peut coder des valeurs allant jusqu'à 65536 ce qui est trop petit pour stocker nos données.
+On mutiplie chaque valeur par 1 million pour éviter les virgules et avoir des nombres entiers à transmettre. On est obligé de coder ces valeurs sur 32 bits car avec 16 bits on peut coder des valeurs allant jusqu'à 65536 ce qui est trop petit pour stocker ces données GPS.
 
 
 Enfin, il faut répartir ces valeurs dans la variable loraData pour les envoyer. 
 Pour la température, cela reste la même étape. En revanche, on ne peut pas utiliser lowByte() et highByte() sur les données géographiques car elles sont codée sur 32 bits et donc on perdrait les 16 bits du milieu si on utilise ces 2 fonctions.
 
-On va donc stocker nos données décalé de 8 bits à chaque fois comme suit:
+On va donc stocker nos données décalées de 8 bits à chaque fois comme suit:
 ![](https://i.imgur.com/p9il5Za.png)
 
 Cette technique permet de stocker les 8 bits dans un 1 octets, puis les 8 suivants dans le second octet et ainsi de suite.
 
 Une fois le stockage fait dans la variable d'envoi, on utilise la fonction lora.sendData() avec les mêmes paramètres que ceux vu auparavant.
 
-Enfin, on peut choisir le delais entre chaque transmission LoRa avec la commande delay(temsp en ms).
-Nous verrons un petit plus tard comment mettre en veille notre carte pour économiser la batterie.
+Enfin, on peut choisir le delai entre chaque transmission LoRa avec la commande delay(temps en ms).
+Nous verrons plus tard comment mettre en veille notre carte pour économiser la batterie.
 
 ### Décodage des données sur TTN
 
@@ -213,18 +214,18 @@ Pour avoir des données lisibles, on va utiliser le code suivant dans la section
     field1: temperature/100,
     field2: humidity/100,
     
-    latitude: lat/1000000,
-    longitude: lon/1000000,
-    elevation: 0
+    field3: lat/1000000,
+    field4: lon/1000000,
+    field5: 23
     
   }
 }
 ```
 
-Cette fonction permet de placer les octets reçu dans leurs variables correspondantes.
+Cette fonction permet de placer les octets reçu dans les variables correspondantes.
 Dans ce code,  bytes[] correspont aux octets que l'on a reçu.
 
-Si on prend l'exemple de la tempéture qui est codé sur 16 bits, on va stocker le première octect dans la variable, puis on se décale de 8 bits dans les données reçu et on stocke aussi le prochain octet.
+Si on prend l'exemple de la température qui est codée sur 16 bits, on va stocker le premier octet dans la variable, puis on se décale de 8 bits dans les données reçues et on stocke le prochain octet et ainsi de suite.
 Le principe est le même pour l'humidité.
 Concernant les données géographiques, c'est aussi le même principe sauf que l'on répette l'opération 4 fois étant donné que l'on a 32 bits pour chaque.
 
@@ -254,7 +255,7 @@ Vous pouvez aussi fournir quelques détails optionnel tel qu'un site Web associ�
 
 Une fois l'ensemble des informations rentrées, vous pouvez valider et votre channel Thingspeak est crée.
 
-Nous verons par la suite comment afficher les données dans les graphes.
+Nous verrons par la suite comment afficher les données dans les graphes.
 
 Sur votre channel dans la section API Keys vous pouvez retrouvez la clé d'API pour écrire dans le channel ainsi que la clé d'API pour lire les données du channel.
 
@@ -269,38 +270,38 @@ A partir de TTN, il est possible d'envoyer les données reçues par LoRa sur Thi
 Dans un premier temps, il faut créer un channel sur Thingspeak.
 
 
+Il faut ensuite créer une intégration sur TTN.
 
-Pour cela, il faut dans un premier temps créer une intégration sur TTN.
 
-
-Dans la section "Integrations", cliquer sur "Add New" et choisir Thingspeak.
+Dans la section "Integrations", cliquer sur "Add New" et choisir ThingSpeak.
 
 Il faut ensuite renseigner quelques informations comme suit:
 
 ![](https://i.imgur.com/vew0GRX.png)
 
 * ProcessID: nom de l'intégration
-* Authorization: Clé d'API qui permet d'écrir sur un channel ThingSpeak, différente pour chaque channel, vous pouvez retrouvez l'ensemble de ces informations sur le site.
-* Channel ID: Numéro de channel ThingSpeak sur lequel vous souhaitez envoyer les données. A noter qu'il faut que la clé d'API soit celle du channel sinon les données ne seront pas envoyé vers ThingSpeak.
+* Authorization: Clé d'API qui permet d'écrir sur un channel ThingSpeak, différente pour chaque channel, vous pouvez retrouver l'ensemble de ces informations sur le site.
+* Channel ID: Numéro de channel ThingSpeak sur lequel vous souhaitez envoyer les données. A noter qu'il faut que la clé d'API soit celle du channel sinon les données ne seront pas envoyées vers ThingSpeak.
 
 Une fois l'ensemble des ces données ajoutées, on clique sur "Add Integration ".
 
 Il faut maintenant encoder les données pour les envoyer sur le site.
-Contrairement à Cayenne, il n'est pas nécessaire d'utiliser un protocole pour reencoder les données pour les envoyer sur la plateforme.
-En effet, le code que nous avons vu pour décoder les données au dessus est le format adapater pour renvoyer les données vers ThingSpeak.
 
-A noter, dans le return ce cette fonction, le nom des variables choisies nous seront nécessaires pour afficher les données sur ThingSpeak.
+Contrairement à Cayenne, il n'est pas nécessaire d'utiliser un protocole pour encoder les données et les envoyer sur la plateforme.
+En effet, le code que nous avons vu auparavant pour décoder les trames LoRa est le format adapter pour renvoyer les données vers ThingSpeak.
+
+A noter: Dans le return ce cette fonction, le nom des variables choisit nous seront nécessaires pour afficher les données sur ThingSpeak.
 
 ![](https://i.imgur.com/q1Wr4RM.png)
 
 
 Une fois cette manipulation effectuée, la configuration sur TTN est terminée.
 
-### Affichage des données sur les graphes de Thingspeak
+### Affichage des données sur les graphes de ThingSpeak
 
-Maintenant que l'agrégation est en place, on va dans un premier temps vérifier que les données arrivent bien sur Thingpeak.
+Maintenant que l'agrégation est en place, nous allons dans un premier temps vérifier que les données arrivent bien sur ThingSpeak.
 
-Pour voir cela, sur la page principale du channel, on peut voir les informations suivantes:
+Pour cela, sur la page principale du channel, on peut voir les informations suivantes:
 
 ![](https://i.imgur.com/8ArMyT2.png)
 
@@ -309,12 +310,12 @@ Pour voir cela, sur la page principale du channel, on peut voir les informations
 * Last Entry: Temps depuis la dernière reception de données
 * Entries: Nombre de données reçues depuis que le channel existe
 
-Dans les réglages de notre channel, on peut associer des noms au données reçues pour simplifier la lecture des graphes.
+Dans les réglages de notre channel, on peut associer des noms aux données reçues pour simplifier la lecture des graphes.
 
 Enfin, pour mettre les données sur des graphes cela se fait automatiquement si la partie décodage des données sur TTN est correcte.
-En effet, puisque l'on a choisi dans le return des variables de types fieldn°, alors les données vont s'associer automatiquement avec les graphes sur Thingspeak.
+En effet, puisque l'on a choisi dans le return des variables de type fieldn°, alors les données vont s'associer automatiquement avec les graphes sur ThingSpeak.
 
-Par exemple, depuis TTN, le champ "field1" correspond à la température. Si on regarde le graphe 1 sur ThingSpeak, on retrouve bien cette température.
+Par exemple, depuis TTN, le champ "field1" correspond à la température. Si on regarde le graphe 1 sur ThingSpeak, on retrouve bien cette donnée.
 
 
 ![](https://i.imgur.com/vduEULN.png)
@@ -342,9 +343,9 @@ Pour cela, cliquez sur "Add Widgets", choissiez celui que vous voulez, et config
 
 ![](https://i.imgur.com/sY0zUa5.png)
 
-### Configuration de l'envoi de mail d'alerte
+### Configuration de l'envoi d'un mail d'alerte
 
-Sur Thingspeak, il est possible de configurer l'envoi de mail qui vous informe lorqu'une valeur dépasse ou est en dessous d'un certain seuil. 
+Sur ThingSpeak, il est possible de configurer l'envoi d'un mail qui vous informe lorqu'une valeur dépasse ou est en dessous d'un certain seuil. 
 
 Pour mettre en place cette fonction, il faut se rendre dans la bar des menus, puis "Apps" et choisir "MATHLAB Analysis".
 
@@ -362,13 +363,13 @@ Quelques explications:
 
 * ChannelID: numéro du channel sur lequel on veut lire les données
 * alertApiKey: API permettant l'envoi des alertes mail. Pour avoir cette clé d'API, vous pouvez suivre cet [exemple](https://www.mathworks.com/help/thingspeak/alerts-api.html).
-* alertUrl: URL par lequel on va appeler l'API, le laisser par défaut.
+* alertUrl: URL par lequel on va appeler l'API, par défaut.
 * alertSubject : Objet du mail qui va être envoyé.
 * TemperatureData: Permet de lire les données de températures sur le channel, prend en paramètres la période sur laquelle on va récupérer les données ainsi que le numéro du champ. Dans notre cas, le champ est le numéro 1 pour la température donc on va utiliser "Field",1 .
 * lastValue: On extrait la dernière température reçue.
 
-On retrouve ensuite la la structure conditionnelle qui permet vérifier si les données sont bien dans les normes.
-Si ce n'est pas le cas, alors on rempli la variable "alertBody" avec le message que l'on souhaite envoyer.
+On retrouve ensuite la structure conditionnelle qui permet vérifier si les données sont bien dans les normes.
+Si ce n'est pas le cas, alors on remplit la variable "alertBody" avec le message que l'on souhaite envoyer.
 
 Enfin la dernière partie sert à envoyer le mail.
 
@@ -383,25 +384,25 @@ On clique sur "New React" puis on renseigne les informations suivantes:
 ![](https://i.imgur.com/jrOWAmx.png)
 
 * React Name
-* Condition Type: On choisit "Numéric" étant donné que l'on va déclencher avec une température reçue.
+* Condition Type: On choisit "Numeric" étant donné que l'on va déclencher avec une température reçue.
 * Test Frequency: À chaque fois que l'on reçoit des données
 * If channel: numéro de channel à tester
 * field: champ sur lequel on déclenche le test
 * is not equal to 1000: Déclenche le trigger à chaque fois que la température n'est pas égale à 1000. Cela permet de déclencher la vérification tout le temps dès que l'on reçoit une température.
 * Action: MATHLAB analysis car c’est le type du code qu'on a crée avant.
 * Code to execute: On choisit le code qu'on a crée auparavant.
-* Options: On execute l'action à chaque fois que la condition n'est pas pas remplie. Comme est la condition est que la température ne soit pas égale à 1000, alors l'action sera déclenchée tout le temps.
+* Options: On execute l'action à chaque fois que la condition n'est pas pas remplie. Comme la condition est que la température ne soit pas égale à 1000, alors l'action sera déclenchée tout le temps.
 
 On sauvegarde et on attend la reception des prochaines données pour voir si cela fonctionne bien.
 Si tout est en ordre, on doit recevoir des mails de ce type:
 
 ![](https://i.imgur.com/q90h3a0.png)
 
-On peut aussi configurer un horodatage pour avoir l'heure précise de l'évenement.
+On peut aussi configurer un horodatage pour avoir l'heure précise de l'événement.
 
 ### Affichage d'une map sur ThingSpeak
 
-Depuis TTN, on envoie vers Thingspeak toutes les données émises par la feather 32u4 et donc les coordonnées GPS. Dans l'exemple, on a des coordonnés GPS fixes mais on peut imaginer avoir un module GPS et donc des données mobiles.
+Depuis TTN, on envoie vers Thingspeak toutes les données émises par la feather 32u4 et donc les coordonnées GPS. Dans l'exemple, on a des coordonnées GPS fixes mais on peut imaginer avoir un module GPS et donc des données mobiles.
 Dans ce cas, il peut être utile d'avoir une carte pour visualiser où se trouve l'objet. 
 
 Pour cela, dans le menu principal "Apps" rendez-vous dans la section "Mathlab Visualizations". 
@@ -413,13 +414,13 @@ Il faut ajouter ensuite le code suivant pour créer une carte et y placer un poi
 ![](https://i.imgur.com/xQ2IxYB.png)
 
 Quelques explications:
-* mapData: Variable dans laquelle on va stocker les coordonnéees GPS récupérées sur notre channel
-* thingSpeakRead: Fonction qui va récupérer les données géographique sur notre channel. Quelques paramètres importants:
+* mapData: Variable dans laquelle on va stocker les coordonnées GPS récupérées sur notre channel
+* thingSpeakRead: Fonction qui va récupérer les données géographiques sur notre channel. Quelques paramètres importants:
     * 1042873: Numéro du channel
-    * 'Fields',[3,4] : Sélection des champs où se trouvent les coordonnées GPS sur le channel.
+    * 'Fields',[3,4] : Sélection des champs où se trouvent les coordonnées GPS.
     * ReadKey: Clé d'API de lecture du channel.
 
-* Geoscatter(latitude, longitude, 'r'): Permet de placer un point sur la carte en fonction des coordonnées récupérées avant.
+* Geoscatter(latitude, longitude, 'r'): Permet de placer un point sur la carte en fonction des coordonnées récupérées.
 * geobasemap: Choix de la carte, ex : satellite, street ...
 * ax.ZoomLevel: Niveau de zoom sur la carte, de 0 à 20 .
 
@@ -436,13 +437,13 @@ Si tout est correct, vous devriez voir apparaître la carte sur l'interface du c
 
 Maintenant que la carte est configurée pour envoyer les données et que la partie serveur et application est opérationnelle, nous allons voir comment limiter la consommation de la carte. 
 
-Premièrement, on peut limiter la consommation de celle-ci en limitant le nombre d'envoi par heure de nos données. En effet, si l'on a pas besoin de data très régulièrement, plus le nombre d'envoi est faible plus la batterie est économiser.
-Dans notre cas, on décide d'envoyer la température et l'humidité 3 fois par heure la température ne varie pas très rapidement. Ce paramètre est à adapter en fonction de votre situation.
+Premièrement, on peut limiter la consommation de celle-ci en limitant le nombre d'envois par heure de nos données. En effet, si l'on a pas besoin de data très régulièrement, plus le nombre d'envois est faible, plus la batterie est économisée.
+Dans notre cas, on décide d'envoyer la température et l'humidité 3 fois par heure car la température ne varie pas très rapidement dans un appartement. Ce paramètre est à adapter en fonction de votre situation.
 
 Le deuxième point que l'on peut modifier pour économiser la batterie est la mise en veille du module LoRa. En effet, si on émet toutes les 20 minutes, le module LoRa n'a pas besoin d'être actif pendant ce temps.
 
 Pour appliquer cette configuration à notre carte, il faut installer la librairie RH_RF95.h.
-On définit une variable de type RH_RF95 au niveau globale:
+On définit une variable de type RH_RF95 au niveau global:
 ```
     RH_RF95 radio;
 ```
@@ -452,7 +453,7 @@ On place la commande suivante dans le void loop après l'envoi des données:
 
 Le module radio se rallume automatiquement à chaque envoi de données.
 
-Ensuite, pour économiser encore plus de batterie, on peut mettre en veille le microprocesseur de la carte feather 32u4.
+Ensuite, pour économiser encore plus la batterie, on peut mettre en veille le microprocesseur de la carte feather 32u4.
 Pour cela, il faut d'abord installer la librairie "LowPower.h".
 
 A noter que cette carte peut supporter maximum 8 secondes de pause avec un watchdog. Si on veut mettre la carte en pause pour un très grand temps, on peut utiliser le mode "Forever" mais il sera nécessaire d'avoir une interruption pour réveiller la carte.
@@ -465,7 +466,7 @@ Pour cela après l'envoi des données et l'arrêt du module LoRa, placez le code
 
 Quelques explications:
 
-* int timesleep: Variable représentant le nombres de secondes de repos de la carte
+* int timesleep: Variable représentant le nombre de secondes de repos de la carte
 * radio.sleep(): Mise en arrêt du module LoRa
 * for(...): On divise le temps de pause souhaité par 8s pour avoir le nombre de cycles à effectuer.
 * LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF): Permet de mettre en veille la carte pendant 8s. On recommence l'opération tant que le nombre de cycles n'est pas effectué.
@@ -480,15 +481,18 @@ En revanche, si vous souhaitez afficher des données dans la console serial, il 
 * USBDevice.detach(): permet de déconnecter l'USB avant la veille
 * USBDevice.attach(): Reconnecte l'USB après la veille.
 
-Dans cet exemple, on a pas temps de d'afficher des données sur la console serial car ce n'est pas ce que l'on souhaite faire. En revanche, si vous souhaitez le faire, il faut placer à la suite du USBDevice.attach() un delais de 5 à 10 secondes pour avoir le temps d'ouvrir la console et d'ensuite afficher les données.
+Dans cet exemple, on a pas le temps de d'afficher des données sur la console serial car ce n'est pas ce que l'on souhaite faire.
 
-Enfin, dernier très important. Comme notre carte dors 99% du temps, le capteur de températures DHT22 est donc lui aussi hors tension et ne réalise pas de mesure. D'après la notice constructeur, ce capteur réalise une mesure toute les 2 secondes. 
+En revanche, si vous souhaitez le faire, il faut placer à la suite du USBDevice.attach() un delais de 5 à 10 secondes pour avoir le temps d'ouvrir la console et d'ensuite afficher les données.
 
-Je conseille donc je placer un delai juste avant la lecture du capteur pour lui laisser le temps de réaliser sa mesure. Si vous ne lui laissez pas assez de temps, vous risquez d'avoir toujours la même valeur et celle-ci sera par conséquent erronée.
+Enfin, dernier point très important. Comme notre carte dors 99% du temps, le capteur de températures DHT22 est donc lui aussi hors tension et ne réalise pas de mesures. D'après la notice constructeur, ce capteur réalise une mesure toute les 2 secondes. 
+
+Je conseille donc de placer un delai juste avant la lecture du capteur pour lui laisser le temps de réaliser sa mesure. Si vous ne lui laissez pas assez de temps, vous risquez d'avoir toujours la même valeur et celle-ci sera par conséquent erronée.
 
 ![](https://i.imgur.com/0KlHlVC.png)
 
 Personnellement, j'ai choisi de lui laisser 4 secondes de pause pour qu'il puisse réaliser 2 mesures et avoir une valeur précise. Vous pouvez néanmoins simplement lui laisser 2 secondes, le temps minimal d'une lecture.
 
 Tout le code utilisé pour la programmation des cartes est disponible sur GitHub.
+Lien du channel ThingSpeak: https://thingspeak.com/channels/1042873
 
