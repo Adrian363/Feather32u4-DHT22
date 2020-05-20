@@ -21,7 +21,8 @@ Pour connecter le capteur, l'alimentation se branche sur le 3V de la carte, la m
 Avant de pouvoir coder et compiler depuis l'IDE d'Arduino, il faut dans un premier installer le modèle de la carte pour que celle-ci soit reconnue.
 Sur Mac et Windows les installations sont légérement différentes.
 
-Sur Mac:
+**Sur Mac:**
+
     1) Ouvrez la fenêtre Préferences
     2) Remplir la case "Additional boards" avec le lien suivant: 
     https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
@@ -31,7 +32,8 @@ Sur Mac:
     4) Dans Tools/Board choisir "AdaFruit feather 32u4"
     5) Étant donné que cette carte a le même microprocesseur qu'un Arduino Leonardo, vous pouvez utilisez les mêmes commandes.
     
-Sur Windows:
+**Sur Windows:**
+
     Globalement la même installation à la seule différence qu'il faut installer un pilote pour que la carte soit détecter par l'ordinateur.
     https://learn.adafruit.com/adafruit-feather-32u4-bluefruit-le/using-with-arduino-ide
     
@@ -279,9 +281,9 @@ Il faut ensuite renseigner quelques informations comme suit:
 
 ![](https://i.imgur.com/vew0GRX.png)
 
-* ProcessID: nom de l'intégration
-* Authorization: Clé d'API qui permet d'écrir sur un channel ThingSpeak, différente pour chaque channel, vous pouvez retrouver l'ensemble de ces informations sur le site.
-* Channel ID: Numéro de channel ThingSpeak sur lequel vous souhaitez envoyer les données. A noter qu'il faut que la clé d'API soit celle du channel sinon les données ne seront pas envoyées vers ThingSpeak.
+* **ProcessID:** nom de l'intégration
+* **Authorization:** Clé d'API qui permet d'écrir sur un channel ThingSpeak, différente pour chaque channel, vous pouvez retrouver l'ensemble de ces informations sur le site.
+* **Channel ID:** Numéro de channel ThingSpeak sur lequel vous souhaitez envoyer les données. A noter qu'il faut que la clé d'API soit celle du channel sinon les données ne seront pas envoyées vers ThingSpeak.
 
 Une fois l'ensemble des ces données ajoutées, on clique sur "Add Integration ".
 
@@ -306,9 +308,9 @@ Pour cela, sur la page principale du channel, on peut voir les informations suiv
 ![](https://i.imgur.com/8ArMyT2.png)
 
 
-* Created: Nombre de jour depuis la création du channel
-* Last Entry: Temps depuis la dernière reception de données
-* Entries: Nombre de données reçues depuis que le channel existe
+* **Created:** Nombre de jour depuis la création du channel
+* **Last Entry:** Temps depuis la dernière reception de données
+* **Entries:** Nombre de données reçues depuis que le channel existe
 
 Dans les réglages de notre channel, on peut associer des noms aux données reçues pour simplifier la lecture des graphes.
 
@@ -328,10 +330,10 @@ En cliquant sur le crayon en haut de graphe, on peut modifier les paramètres d'
 
 Quelques options de réglages:
 
-* Timescale: Interval d'affichage des points, ici 30 minutes entre chaque points
-* Results: Nombre maximum de points à afficher sur le graphe. Dans mon cas, je souhaite en afficher 48, car comme on reçoit une donnée toutes les 30 minutes, cela permet d'afficher les données sur une période de 24h environ.
-* Y-Axis Min: Valeur minimale sur l'axe des ordonnées, ici -20 degrés.
-* Y-Axis Max: Valeur maximale sur l'axe des ordonnées, ici 50 degrés.
+* **Timescale:** Interval d'affichage des points, ici 30 minutes entre chaque points
+* **Results:** Nombre maximum de points à afficher sur le graphe. Dans mon cas, je souhaite en afficher 48, car comme on reçoit une donnée toutes les 30 minutes, cela permet d'afficher les données sur une période de 24h environ.
+* **Y-Axis Min:** Valeur minimale sur l'axe des ordonnées, ici -20 degrés.
+* **Y-Axis Max:** Valeur maximale sur l'axe des ordonnées, ici 50 degrés.
 
 Enfin, on peut aussi régler les couleurs d'affichage, si l'on veut des lignes, des points ...
 
@@ -361,12 +363,12 @@ Voici le code modifié pour envoyer un mail lorsque la température passe en des
 
 Quelques explications:
 
-* ChannelID: numéro du channel sur lequel on veut lire les données
-* alertApiKey: API permettant l'envoi des alertes mail. Pour avoir cette clé d'API, vous pouvez suivre cet [exemple](https://www.mathworks.com/help/thingspeak/alerts-api.html).
-* alertUrl: URL par lequel on va appeler l'API, par défaut.
-* alertSubject : Objet du mail qui va être envoyé.
-* TemperatureData: Permet de lire les données de températures sur le channel, prend en paramètres la période sur laquelle on va récupérer les données ainsi que le numéro du champ. Dans notre cas, le champ est le numéro 1 pour la température donc on va utiliser "Field",1 .
-* lastValue: On extrait la dernière température reçue.
+* **ChannelID:** numéro du channel sur lequel on veut lire les données
+* **alertApiKey:** API permettant l'envoi des alertes mail. Pour avoir cette clé d'API, vous pouvez suivre cet [exemple](https://www.mathworks.com/help/thingspeak/alerts-api.html).
+* **alertUrl:** URL par lequel on va appeler l'API, par défaut.
+* **alertSubject :** Objet du mail qui va être envoyé.
+* **TemperatureData:** Permet de lire les données de températures sur le channel, prend en paramètres la période sur laquelle on va récupérer les données ainsi que le numéro du champ. Dans notre cas, le champ est le numéro 1 pour la température donc on va utiliser "Field",1 .
+* **lastValue:** On extrait la dernière température reçue.
 
 On retrouve ensuite la structure conditionnelle qui permet vérifier si les données sont bien dans les normes.
 Si ce n'est pas le cas, alors on remplit la variable "alertBody" avec le message que l'on souhaite envoyer.
@@ -383,15 +385,15 @@ Pour cela, dans le menu puis "Apps", on choisit "React".
 On clique sur "New React" puis on renseigne les informations suivantes:
 ![](https://i.imgur.com/jrOWAmx.png)
 
-* React Name
-* Condition Type: On choisit "Numeric" étant donné que l'on va déclencher avec une température reçue.
-* Test Frequency: À chaque fois que l'on reçoit des données
-* If channel: numéro de channel à tester
-* field: champ sur lequel on déclenche le test
-* is not equal to 1000: Déclenche le trigger à chaque fois que la température n'est pas égale à 1000. Cela permet de déclencher la vérification tout le temps dès que l'on reçoit une température.
-* Action: MATHLAB analysis car c’est le type du code qu'on a crée avant.
-* Code to execute: On choisit le code qu'on a crée auparavant.
-* Options: On execute l'action à chaque fois que la condition n'est pas pas remplie. Comme la condition est que la température ne soit pas égale à 1000, alors l'action sera déclenchée tout le temps.
+* **React Name**
+* **Condition Type:** On choisit "Numeric" étant donné que l'on va déclencher avec une température reçue.
+* **Test Frequency:** À chaque fois que l'on reçoit des données
+* **If channel:** numéro de channel à tester
+* **field:** champ sur lequel on déclenche le test
+* **is not equal to 1000:** Déclenche le trigger à chaque fois que la température n'est pas égale à 1000. Cela permet de déclencher la vérification tout le temps dès que l'on reçoit une température.
+* **Action:** MATHLAB analysis car c’est le type du code qu'on a crée avant.
+* **Code to execute:** On choisit le code qu'on a crée auparavant.
+* **Options:** On execute l'action à chaque fois que la condition n'est pas pas remplie. Comme la condition est que la température ne soit pas égale à 1000, alors l'action sera déclenchée tout le temps.
 
 On sauvegarde et on attend la reception des prochaines données pour voir si cela fonctionne bien.
 Si tout est en ordre, on doit recevoir des mails de ce type:
@@ -414,15 +416,15 @@ Il faut ajouter ensuite le code suivant pour créer une carte et y placer un poi
 ![](https://i.imgur.com/xQ2IxYB.png)
 
 Quelques explications:
-* mapData: Variable dans laquelle on va stocker les coordonnées GPS récupérées sur notre channel
-* thingSpeakRead: Fonction qui va récupérer les données géographiques sur notre channel. Quelques paramètres importants:
-    * 1042873: Numéro du channel
-    * 'Fields',[3,4] : Sélection des champs où se trouvent les coordonnées GPS.
-    * ReadKey: Clé d'API de lecture du channel.
+* **mapData:** Variable dans laquelle on va stocker les coordonnées GPS récupérées sur notre channel
+* **thingSpeakRead:** Fonction qui va récupérer les données géographiques sur notre channel. Quelques paramètres importants:
+    * **1042873:** Numéro du channel
+    * **'Fields',[3,4] :** Sélection des champs où se trouvent les coordonnées GPS.
+    * **ReadKey:** Clé d'API de lecture du channel.
 
-* Geoscatter(latitude, longitude, 'r'): Permet de placer un point sur la carte en fonction des coordonnées récupérées.
-* geobasemap: Choix de la carte, ex : satellite, street ...
-* ax.ZoomLevel: Niveau de zoom sur la carte, de 0 à 20 .
+* **Geoscatter(latitude, longitude, 'r'):** Permet de placer un point sur la carte en fonction des coordonnées récupérées.
+* **geobasemap:** Choix de la carte, ex : satellite, street ...
+* **ax.ZoomLevel:** Niveau de zoom sur la carte, de 0 à 20 .
 
 Une fois ce code entré, on choisit sur quel channel on souhaite que la carte apparaisse et on enregistre.
 
@@ -466,10 +468,10 @@ Pour cela après l'envoi des données et l'arrêt du module LoRa, placez le code
 
 Quelques explications:
 
-* int timesleep: Variable représentant le nombre de secondes de repos de la carte
-* radio.sleep(): Mise en arrêt du module LoRa
-* for(...): On divise le temps de pause souhaité par 8s pour avoir le nombre de cycles à effectuer.
-* LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF): Permet de mettre en veille la carte pendant 8s. On recommence l'opération tant que le nombre de cycles n'est pas effectué.
+* **int timesleep:** Variable représentant le nombre de secondes de repos de la carte
+* **radio.sleep():** Mise en arrêt du module LoRa
+* **for(...):** On divise le temps de pause souhaité par 8s pour avoir le nombre de cycles à effectuer.
+* **LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF):** Permet de mettre en veille la carte pendant 8s. On recommence l'opération tant que le nombre de cycles n'est pas effectué.
 
 Attention: Lorsque la carte est en veille le port serial n'est plus accessible.
 Si vous souhaitez récrire du code sur celle-ci, appuyez sur le bouton reset de la carte et téleverser rapidement le code.
@@ -478,8 +480,8 @@ En revanche, si vous souhaitez afficher des données dans la console serial, il 
 
 ![](https://i.imgur.com/avVp2SP.png)
 
-* USBDevice.detach(): permet de déconnecter l'USB avant la veille
-* USBDevice.attach(): Reconnecte l'USB après la veille.
+* **USBDevice.detach():** permet de déconnecter l'USB avant la veille
+* **USBDevice.attach():** Reconnecte l'USB après la veille.
 
 Dans cet exemple, on a pas le temps de d'afficher des données sur la console serial car ce n'est pas ce que l'on souhaite faire.
 
