@@ -1,24 +1,4 @@
 
-
-
-
-
-/* Quand on flash re-flash une carte, il ne faut pas oublier de réhinialiser le compteur de frames sur TTN sinon les données ne sont pas envoyées.*/
-
-/*#define VBATPIN A9
-   
-float measuredvbat = analogRead(VBATPIN);
-measuredvbat *= 2;    // we divided by 2, so multiply back
-measuredvbat *= 3.3;  // Multiply by 3.3V, our reference voltage
-measuredvbat /= 1024; // convert to voltage
-Serial.print("VBat: " ); Serial.println(measuredvbat);
-
-https://learn.adafruit.com/adafruit-feather-32u4-radio-with-lora-radio-module/power-management
-
-
-
-*/
-
 #include <RH_RF95.h>
 #include "DHT.h"
 #include <TinyLoRa.h>
