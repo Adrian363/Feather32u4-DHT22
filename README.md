@@ -23,8 +23,9 @@ Sur Mac et Windows les installations sont légérement différentes.
 
 **Sur Mac:**
 
-    1) Ouvrez la fenêtre Préferences
-    2) Remplir la case "Additional boards" avec le lien suivant: 
+    
+1) Ouvrez la fenêtre Préferences
+2) Remplir la case "Additional boards" avec le lien suivant: 
     https://adafruit.github.io/arduino-board-index/package_adafruit_index.json
     
 ![](https://i.imgur.com/UcPjCcn.png)
@@ -34,7 +35,7 @@ Sur Mac et Windows les installations sont légérement différentes.
     
 **Sur Windows:**
 
-    Globalement la même installation à la seule différence qu'il faut installer un pilote pour que la carte soit détecter par l'ordinateur.
+Globalement la même installation à la seule différence qu'il faut installer un pilote pour que la carte soit détecter par l'ordinateur.
     https://learn.adafruit.com/adafruit-feather-32u4-bluefruit-le/using-with-arduino-ide
     
     
